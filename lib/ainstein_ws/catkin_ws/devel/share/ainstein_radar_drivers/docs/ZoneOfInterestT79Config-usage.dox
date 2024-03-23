@@ -1,0 +1,10 @@
+\subsubsection usage Usage
+\verbatim
+<node name="ainstein_radar_drivers" pkg="ainstein_radar_drivers" type="ainstein_radar_drivers">
+  <param name="min_range" type="double" value="0.0" />
+  <param name="max_range" type="double" value="100.0" />
+  <param name="min_angle" type="double" value="60.0" />
+  <param name="max_angle" type="double" value="60.0" />
+</node>
+\endverbatim
+

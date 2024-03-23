@@ -1,0 +1,9 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~min_range" : \b [double] Minimum target range, in meters min: 0.0, default: 0.0, max: 80.0
+- \b "~max_range" : \b [double] Maximum target range, in meters min: 0.0, default: 100.0, max: 80.0
+- \b "~min_angle" : \b [double] Minimum azimuth angle, in degrees min: 0.0, default: 60.0, max: 60.0
+- \b "~max_angle" : \b [double] Maximum azimuth angle, in degrees min: 0.0, default: 60.0, max: 60.0
+

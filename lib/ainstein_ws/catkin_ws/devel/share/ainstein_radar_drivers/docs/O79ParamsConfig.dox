@@ -1,0 +1,20 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~update_rate" : \b [int] Tracking filter output data rate (fixed on initialization) min: 1, default: 10, max: 20
+- \b "~min_time" : \b [double] Minimum time before target begins being tracked min: 0.1, default: 2.0, max: 10.0
+- \b "~timeout" : \b [double] Timeout for filter updates, after which target is dropped min: 0.1, default: 0.5, max: 10.0
+- \b "~confidence_level" : \b [int] Tracking filter confidence level (sets KF validation gate threshold) min: 1, default: 3, max: 9
+- \b "~proc_noise_speed" : \b [double] Kalman Filter speed process noise standard deviation, in meters per second min: 0.1, default: 1.0, max: 10.0
+- \b "~proc_noise_azim" : \b [double] Kalman Filter azimuth process noise standard deviation, in degrees min: 0.1, default: 5.0, max: 20.0
+- \b "~proc_noise_elev" : \b [double] Kalman Filter elevation process noise standard deviation, in degrees min: 0.1, default: 5.0, max: 20.0
+- \b "~min_range" : \b [double] Minimum range of detections used for filter updates, in meters min: 0.1, default: 0.2, max: 10.0
+- \b "~max_range" : \b [double] Maximum range of detections used for filter updates, in meters min: 0.1, default: 15.0, max: 25.0
+- \b "~proc_noise_vel_x" : \b [double] Cartesian Kalman Filter X velocity process noise standard deviation, in meters per second min: 0.1, default: 0.1, max: 5.0
+- \b "~proc_noise_vel_y" : \b [double] Cartesian Kalman Filter Y velocity process noise standard deviation, in meters per second min: 0.1, default: 0.1, max: 5.0
+- \b "~proc_noise_vel_z" : \b [double] Cartesian Kalman Filter Z velocity process noise standard deviation, in meters per second min: 0.1, default: 0.1, max: 5.0
+- \b "~meas_noise_speed" : \b [double] Cartesian Kalman Filter speed measurement noise standard deviation, in meters per second min: 0.1, default: 1.0, max: 10.0
+- \b "~meas_noise_pos" : \b [double] Cartesian Kalman Filter position measurement noise standard deviation, in meters min: 0.1, default: 1.0, max: 5.0
+- \b "~filter_type" : \b [int] Filter type to be used for tracking (0 for spherical, 1 for Cartesian) min: 0, default: 0, max: 1
+

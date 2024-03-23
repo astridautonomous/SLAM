@@ -1,0 +1,21 @@
+\subsubsection usage Usage
+\verbatim
+<node name="ainstein_radar_filters" pkg="ainstein_radar_filters" type="ainstein_radar_filters">
+  <param name="filter_update_rate" type="int" value="20" />
+  <param name="filter_min_time" type="double" value="0.5" />
+  <param name="filter_timeout" type="double" value="0.5" />
+  <param name="filter_val_gate_thresh" type="double" value="1.064" />
+  <param name="kf_init_range_stdev" type="double" value="1.0" />
+  <param name="kf_init_speed_stdev" type="double" value="2.0" />
+  <param name="kf_init_azim_stdev" type="double" value="1.0" />
+  <param name="kf_init_elev_stdev" type="double" value="1.0" />
+  <param name="kf_q_speed_stdev" type="double" value="5.0" />
+  <param name="kf_q_azim_stdev" type="double" value="10.0" />
+  <param name="kf_q_elev_stdev" type="double" value="10.0" />
+  <param name="kf_r_range_stdev" type="double" value="1.0" />
+  <param name="kf_r_speed_stdev" type="double" value="5.0" />
+  <param name="kf_r_azim_stdev" type="double" value="20.0" />
+  <param name="kf_r_elev_stdev" type="double" value="20.0" />
+</node>
+\endverbatim
+

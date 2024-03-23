@@ -1,0 +1,8 @@
+prefix=/home/tezcan/Work_Spaces/catkin_ws/devel
+
+Name: ainstein_radar_filters
+Description: Description of ainstein_radar_filters
+Version: 3.0.1
+Cflags: -I/home/tezcan/Work_Spaces/catkin_ws/devel/include -I/home/tezcan/Work_Spaces/catkin_ws/src/ainstein_radar_filters/include
+Libs: -L${prefix}/lib 
+Requires: 

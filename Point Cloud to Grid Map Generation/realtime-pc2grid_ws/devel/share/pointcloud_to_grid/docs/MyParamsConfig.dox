@@ -1,0 +1,16 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~position_x" : \b [double] center position x min: -20.0, default: -5.0, max: 22.0
+- \b "~position_y" : \b [double] center position y min: -20.0, default: 0.0, max: 20.0
+- \b "~cell_size" : \b [double] size of a grid cell min: 0.0001, default: 0.0001, max: 5.0
+- \b "~length_x" : \b [double] In meters min: 0.1, default: 80.0, max: 200.0
+- \b "~length_y" : \b [double] In meters min: 0.1, default: 80.0, max: 200.0
+- \b "~intensity_factor" : \b [double] Multiply intensity min: 0.001, default: 0.2, max: 10.0
+- \b "~height_factor" : \b [double] Multiply height min: 0.001, default: 1.0, max: 10.0
+- \b "~cloud_in_topic" : \b [str] A LIDAR topic to subscribe. Restart needed if it changes. min: , default: /carla/ego_vehicle/lidar, max: 
+- \b "~mapi_topic_name" : \b [str] Intensity map topic name. Restart needed if it changes. min: , default: /lidargrid_i, max: 
+- \b "~maph_topic_name" : \b [str] Height map topic name. Restart needed if it changes. min: , default: /lidargrid_h, max: 
+- \b "~debug" : \b [bool] publish debug topics too min: False, default: True, max: True
+

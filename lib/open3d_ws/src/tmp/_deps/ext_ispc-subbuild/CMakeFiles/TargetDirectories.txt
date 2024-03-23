@@ -1,0 +1,3 @@
+/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/CMakeFiles/rebuild_cache.dir
+/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/CMakeFiles/edit_cache.dir
+/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/CMakeFiles/ext_ispc-populate.dir

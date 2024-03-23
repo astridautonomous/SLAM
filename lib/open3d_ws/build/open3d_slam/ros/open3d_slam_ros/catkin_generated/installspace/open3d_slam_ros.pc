@@ -1,0 +1,8 @@
+prefix=/home/tezcan/Work_Spaces/open3d_ws/install
+
+Name: open3d_slam_ros
+Description: Description of open3d_slam_ros
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib -lyaml-cpp -lopen3d_slam_ros
+Requires: roscpp roslib open3d_conversions open3d_slam eigen_conversions tf2 tf2_ros tf2_geometry_msgs rosbag interactive_markers open3d_slam_lua_io

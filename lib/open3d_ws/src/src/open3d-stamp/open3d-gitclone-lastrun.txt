@@ -1,0 +1,3 @@
+repository='https://github.com/isl-org/Open3D'
+module=''
+tag='origin'

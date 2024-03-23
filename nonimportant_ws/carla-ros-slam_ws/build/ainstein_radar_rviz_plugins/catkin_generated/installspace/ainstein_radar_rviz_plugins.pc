@@ -1,0 +1,8 @@
+prefix=/home/tezcan/Work_Spaces/carla-ros-slam_ws/install
+
+Name: ainstein_radar_rviz_plugins
+Description: Description of ainstein_radar_rviz_plugins
+Version: 2.0.2
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

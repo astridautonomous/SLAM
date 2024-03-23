@@ -1,0 +1,16 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~filter_update_rate" : \b [int] Tracking filter output data rate (fixed on initialization) min: 1, default: 20, max: 100
+- \b "~min_range" : \b [double] Minimum Range of points to include in the tracker (m) min: 0.0, default: 0.3, max: 20.0
+- \b "~filter_val_gate_thresh" : \b [double] Tracking filter validation gate threshold for new measurements min: 0.207, default: 1.064, max: 9.488
+- \b "~kf_init_pos_stdev" : \b [double] Kalman Filter initial position standard deviation, in meters min: 0.001, default: 1.0, max: 10.0
+- \b "~kf_init_vel_stdev" : \b [double] Kalman Filter initial velocity standard deviation, in meters per second min: 0.001, default: 2.0, max: 10.0
+- \b "~kf_q_vel_stdev" : \b [double] Kalman Filter velocity process noise standard deviation, in meters per second min: 0.001, default: 2.0, max: 10.0
+- \b "~kf_r_speed_stdev" : \b [double] Kalman Filter speed measurement noise standard deviation, in meters per second min: 0.001, default: 2.0, max: 10.0
+- \b "~kf_r_pos_stdev" : \b [double] Kalman Filter position measurement noise standard deviation, in meters min: 0.01, default: 1.0, max: 10.0
+- \b "~tracked_min_cnt" : \b [int] Minimum number of updates to create a valid track from a potential one min: 1, default: 3, max: 100
+- \b "~pre_tracked_max_cnt" : \b [int] Maximum number of update tries before a potential track is deleted min: 1, default: 5, max: 100
+- \b "~ext_max_cnt" : \b [int] Number of updates for which to keep a track after the last point was associated min: 1, default: 3, max: 100
+

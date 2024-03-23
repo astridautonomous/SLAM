@@ -1,0 +1,8 @@
+prefix=/home/tezcan/Work_Spaces/open3d_ws/devel
+
+Name: lua_parameter_dictionary
+Description: Description of lua_parameter_dictionary
+Version: 1.0.0
+Cflags: -I/home/tezcan/Work_Spaces/open3d_ws/src/open3d_slam/open3d_slam/open3d_slam_io/lua_parameter_dictionary/include -I/usr/include/lua5.2
+Libs: -L${prefix}/lib -llua_parameter_dictionary /usr/lib/x86_64-linux-gnu/liblua5.2.so /usr/lib/x86_64-linux-gnu/libm.so
+Requires: rospack roslib

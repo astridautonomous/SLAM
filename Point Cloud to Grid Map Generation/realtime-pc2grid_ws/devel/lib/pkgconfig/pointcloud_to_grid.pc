@@ -1,0 +1,8 @@
+prefix=/home/tezcan/workspaces_git/SLAM/realtime-pc2grid_ws/devel
+
+Name: pointcloud_to_grid
+Description: Description of pointcloud_to_grid
+Version: 0.0.0
+Cflags: -I/home/tezcan/workspaces_git/SLAM/realtime-pc2grid_ws/devel/include -I/home/tezcan/workspaces_git/SLAM/realtime-pc2grid_ws/src/pointcloud_to_grid/include
+Libs: -L${prefix}/lib 
+Requires: 

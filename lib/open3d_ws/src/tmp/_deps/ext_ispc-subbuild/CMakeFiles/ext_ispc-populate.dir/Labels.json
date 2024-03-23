@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/CMakeFiles/ext_ispc-populate"
+		},
+		{
+			"file" : "/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/CMakeFiles/ext_ispc-populate.rule"
+		},
+		{
+			"file" : "/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/CMakeFiles/ext_ispc-populate-complete.rule"
+		},
+		{
+			"file" : "/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/ispc/src/ext_ispc-populate-stamp/ext_ispc-populate-build.rule"
+		},
+		{
+			"file" : "/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/ispc/src/ext_ispc-populate-stamp/ext_ispc-populate-configure.rule"
+		},
+		{
+			"file" : "/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/ispc/src/ext_ispc-populate-stamp/ext_ispc-populate-download.rule"
+		},
+		{
+			"file" : "/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/ispc/src/ext_ispc-populate-stamp/ext_ispc-populate-install.rule"
+		},
+		{
+			"file" : "/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/ispc/src/ext_ispc-populate-stamp/ext_ispc-populate-mkdir.rule"
+		},
+		{
+			"file" : "/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/ispc/src/ext_ispc-populate-stamp/ext_ispc-populate-patch.rule"
+		},
+		{
+			"file" : "/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/ispc/src/ext_ispc-populate-stamp/ext_ispc-populate-test.rule"
+		},
+		{
+			"file" : "/home/tezcan/Work_Spaces/open3d_ws/src/tmp/_deps/ext_ispc-subbuild/ispc/src/ext_ispc-populate-stamp/ext_ispc-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"ext_ispc-populate"
+		],
+		"name" : "ext_ispc-populate"
+	}
+}

@@ -1,0 +1,13 @@
+# Target labels
+ open3d
+# Source files and their labels
+/home/tezcan/Work_Spaces/open3d_ws/build/open3d_slam/open3d_catkin/CMakeFiles/open3d
+/home/tezcan/Work_Spaces/open3d_ws/build/open3d_slam/open3d_catkin/CMakeFiles/open3d.rule
+/home/tezcan/Work_Spaces/open3d_ws/build/open3d_slam/open3d_catkin/CMakeFiles/open3d-complete.rule
+/home/tezcan/Work_Spaces/open3d_ws/src/src/open3d-stamp/open3d-build.rule
+/home/tezcan/Work_Spaces/open3d_ws/src/src/open3d-stamp/open3d-configure.rule
+/home/tezcan/Work_Spaces/open3d_ws/src/src/open3d-stamp/open3d-download.rule
+/home/tezcan/Work_Spaces/open3d_ws/src/src/open3d-stamp/open3d-install.rule
+/home/tezcan/Work_Spaces/open3d_ws/src/src/open3d-stamp/open3d-mkdir.rule
+/home/tezcan/Work_Spaces/open3d_ws/src/src/open3d-stamp/open3d-patch.rule
+/home/tezcan/Work_Spaces/open3d_ws/src/src/open3d-stamp/open3d-update.rule

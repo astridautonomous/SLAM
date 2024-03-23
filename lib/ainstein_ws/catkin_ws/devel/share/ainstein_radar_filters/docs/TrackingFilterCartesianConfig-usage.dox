@@ -1,0 +1,17 @@
+\subsubsection usage Usage
+\verbatim
+<node name="ainstein_radar_filters" pkg="ainstein_radar_filters" type="ainstein_radar_filters">
+  <param name="filter_update_rate" type="int" value="20" />
+  <param name="min_range" type="double" value="0.3" />
+  <param name="filter_val_gate_thresh" type="double" value="1.064" />
+  <param name="kf_init_pos_stdev" type="double" value="1.0" />
+  <param name="kf_init_vel_stdev" type="double" value="2.0" />
+  <param name="kf_q_vel_stdev" type="double" value="2.0" />
+  <param name="kf_r_speed_stdev" type="double" value="2.0" />
+  <param name="kf_r_pos_stdev" type="double" value="1.0" />
+  <param name="tracked_min_cnt" type="int" value="3" />
+  <param name="pre_tracked_max_cnt" type="int" value="5" />
+  <param name="ext_max_cnt" type="int" value="3" />
+</node>
+\endverbatim
+

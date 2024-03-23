@@ -1,0 +1,1 @@
+/home/tezcan/Work_Spaces/pcdfile2ocm_ws/devel/.private/catkin_tools_prebuild/local_setup.sh

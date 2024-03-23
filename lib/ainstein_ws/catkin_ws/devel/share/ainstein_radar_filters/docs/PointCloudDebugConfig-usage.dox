@@ -1,0 +1,18 @@
+\subsubsection usage Usage
+\verbatim
+<node name="ainstein_radar_filters" pkg="ainstein_radar_filters" type="ainstein_radar_filters">
+  <param name="print_debug" type="bool" value="False" />
+  <param name="print_timestamp" type="bool" value="False" />
+  <param name="low_range_limit_m" type="double" value="0.2" />
+  <param name="high_range_limit_m" type="double" value="3.0" />
+  <param name="low_speed_limit_mps" type="double" value="-5.0" />
+  <param name="high_speed_limit_mps" type="double" value="5.0" />
+  <param name="low_azimuth_limit_deg" type="double" value="-60.0" />
+  <param name="high_azimuth_limit_deg" type="double" value="60.0" />
+  <param name="low_elevation_limit_deg" type="double" value="-60.0" />
+  <param name="high_elevation_limit_deg" type="double" value="60.0" />
+  <param name="low_power_limit" type="double" value="0.0" />
+  <param name="high_power_limit" type="double" value="65535.0" />
+</node>
+\endverbatim
+
