@@ -1,4 +1,4 @@
-#!~/anaconda3/envs/rosbridge-carla/bin/python3
+#!/usr/bin/env python3
 import numpy as np
 import open3d as o3d
 import cv2 as cv
