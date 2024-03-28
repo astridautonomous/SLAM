@@ -1,2 +1,0 @@
-ainstein_radar:ainstein_radar_drivers:ainstein_radar_filters:ainstein_radar_gazebo_plugins:ainstein_radar_msgs:ainstein_radar_rviz_plugins:ainstein_radar_tools
--DCATKIN_DEVEL_PREFIX=/home/tezcan/Work_Spaces/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/tezcan/Work_Spaces/catkin_ws/install -G Unix Makefiles

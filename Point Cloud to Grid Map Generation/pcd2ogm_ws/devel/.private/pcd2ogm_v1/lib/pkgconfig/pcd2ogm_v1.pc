@@ -1,0 +1,8 @@
+prefix=/home/tezcan/Work_Spaces/pcdfile2ocm_ws/devel/.private/pcd2ogm_v1
+
+Name: pcd2ogm_v1
+Description: Description of pcd2ogm_v1
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

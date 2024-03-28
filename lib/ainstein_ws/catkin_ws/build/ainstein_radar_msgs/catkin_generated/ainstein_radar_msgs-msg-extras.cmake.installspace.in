@@ -1,2 +1,0 @@
-set(ainstein_radar_msgs_MESSAGE_FILES "msg/RadarInfo.msg;msg/RadarAlarm.msg;msg/RadarAlarmArray.msg;msg/RadarAlarmStamped.msg;msg/RadarTarget.msg;msg/RadarTargetArray.msg;msg/RadarTargetStamped.msg;msg/RadarTrackedObject.msg;msg/RadarTrackedObjectArray.msg;msg/RadarTrackedObjectStamped.msg;msg/BoundingBox.msg;msg/BoundingBoxArray.msg;msg/BoundingBoxStamped.msg;msg/TwistArray.msg")
-set(ainstein_radar_msgs_SERVICE_FILES "")

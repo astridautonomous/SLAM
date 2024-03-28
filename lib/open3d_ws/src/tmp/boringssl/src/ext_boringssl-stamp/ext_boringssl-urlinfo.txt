@@ -1,3 +1,0 @@
-repository='external project URL'
-module='https://github.com/isl-org/open3d_downloads/releases/download/boringssl-bin/boringssl_edfe413_linux_x86_64.tar.gz'
-tag='SHA256=9ad9bab54d8872da9957535c15571d4976c14816f86675de3b15cf35ddb92056'

@@ -1,8 +1,0 @@
-prefix=/home/tezcan/Work_Spaces/open3d_ws/devel
-
-Name: open3d_slam_lua_io
-Description: Description of open3d_slam_lua_io
-Version: 0.0.0
-Cflags: -I/home/tezcan/Work_Spaces/open3d_ws/src/open3d_slam/open3d_slam/open3d_slam_io/open3d_slam_lua_io/include
-Libs: -L${prefix}/lib -lopen3d_slam_lua_io
-Requires: open3d_slam lua_parameter_dictionary rospack

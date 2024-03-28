@@ -1,8 +1,0 @@
-prefix=/home/tezcan/Work_Spaces/carla-ros-slam_ws/install
-
-Name: carlaodomtf
-Description: Description of carlaodomtf
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

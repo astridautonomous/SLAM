@@ -1,8 +1,0 @@
-prefix=/home/tezcan/Work_Spaces/catkin_ws/install
-
-Name: ainstein_radar_gazebo_plugins
-Description: Description of ainstein_radar_gazebo_plugins
-Version: 3.0.1
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib 
-Requires: gazebo_plugins gazebo_ros roscpp

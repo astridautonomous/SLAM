@@ -1,7 +1,0 @@
-\subsubsection usage Usage
-\verbatim
-<node name="ainstein_radar_filters" pkg="ainstein_radar_filters" type="ainstein_radar_filters">
-  <param name="slop_duration" type="double" value="0.25" />
-</node>
-\endverbatim
-

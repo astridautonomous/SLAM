@@ -1,2 +1,0 @@
-set(open3d_slam_msgs_MESSAGE_FILES "/home/tezcan/Work_Spaces/open3d_ws/src/open3d_slam/ros/open3d_slam_msgs/msg/Vertices.msg;/home/tezcan/Work_Spaces/open3d_ws/src/open3d_slam/ros/open3d_slam_msgs/msg/PolygonMesh.msg")
-set(open3d_slam_msgs_SERVICE_FILES "/home/tezcan/Work_Spaces/open3d_ws/src/open3d_slam/ros/open3d_slam_msgs/srv/SaveMap.srv;/home/tezcan/Work_Spaces/open3d_ws/src/open3d_slam/ros/open3d_slam_msgs/srv/SaveSubmaps.srv")

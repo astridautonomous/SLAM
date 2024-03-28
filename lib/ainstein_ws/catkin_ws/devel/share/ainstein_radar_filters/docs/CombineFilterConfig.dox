@@ -1,6 +1,0 @@
-\subsubsection parameters ROS parameters
-
-Reads and maintains the following parameters on the ROS server
-
-- \b "~slop_duration" : \b [double] The maximum time allowed between approximately syncronized messages min: 0.0, default: 0.25, max: 10.0
-

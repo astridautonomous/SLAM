@@ -1,8 +1,0 @@
-prefix=/home/tezcan/Work_Spaces/open3d_ws/devel
-
-Name: open3d_slam
-Description: Description of open3d_slam
-Version: 0.0.0
-Cflags: -I/home/tezcan/Work_Spaces/open3d_ws/src/open3d_slam/open3d_slam/open3d_slam/include -I/usr/include/eigen3 -I/usr/include
-Libs: -L${prefix}/lib -lopen3d_slam
-Requires: open3d_catkin

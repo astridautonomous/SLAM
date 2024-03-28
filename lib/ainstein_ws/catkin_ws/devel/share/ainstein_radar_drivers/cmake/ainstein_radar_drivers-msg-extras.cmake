@@ -1,2 +1,0 @@
-set(ainstein_radar_drivers_MESSAGE_FILES "/home/tezcan/Work_Spaces/catkin_ws/src/ainstein_radar_drivers/msg/O79NetworkParams.msg;/home/tezcan/Work_Spaces/catkin_ws/src/ainstein_radar_drivers/msg/O79DeviceParams.msg;/home/tezcan/Work_Spaces/catkin_ws/src/ainstein_radar_drivers/msg/O79TrackingParams.msg;/home/tezcan/Work_Spaces/catkin_ws/src/ainstein_radar_drivers/msg/WayvAirConfiguration.msg;/home/tezcan/Work_Spaces/catkin_ws/src/ainstein_radar_drivers/msg/WayvAirStatus.msg")
-set(ainstein_radar_drivers_SERVICE_FILES "")

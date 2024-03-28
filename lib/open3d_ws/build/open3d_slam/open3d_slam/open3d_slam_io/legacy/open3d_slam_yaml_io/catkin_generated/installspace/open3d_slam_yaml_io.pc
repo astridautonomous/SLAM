@@ -1,8 +1,0 @@
-prefix=/home/tezcan/Work_Spaces/open3d_ws/install
-
-Name: open3d_slam_yaml_io
-Description: Description of open3d_slam_yaml_io
-Version: 0.0.0
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib -lyaml-cpp -lopen3d_slam_yaml_io
-Requires: open3d_slam

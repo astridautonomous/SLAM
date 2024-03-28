@@ -1,3 +1,0 @@
-<launch>
-    <node pkg="TfRemapper" type="tfremapper" args="baselink/odom" name="tf1remapper" />
-</launch>

@@ -1,8 +1,0 @@
-prefix=/home/tezcan/Work_Spaces/open3d_ws/devel
-
-Name: open3d_conversions
-Description: Description of open3d_conversions
-Version: 0.0.2
-Cflags: -I/home/tezcan/Work_Spaces/open3d_ws/src/open3d_slam/open3d_utils/open3d_conversions/include -I/usr/include/eigen3
-Libs: -L${prefix}/lib -lopen3d_conversions
-Requires: roscpp sensor_msgs open3d_catkin open3d_slam_msgs

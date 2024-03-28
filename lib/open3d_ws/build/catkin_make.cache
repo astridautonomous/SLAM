@@ -1,2 +1,0 @@
-open3d_slam/open3d_catkin:open3d_slam/open3d_slam/open3d_slam:open3d_slam/open3d_slam/open3d_slam_io/legacy/open3d_slam_yaml_io:open3d_slam/open3d_slam/open3d_slam_io/lua_parameter_dictionary:open3d_slam/open3d_slam/open3d_slam_io/open3d_slam_lua_io:open3d_slam/open3d_utils/open3d_conversions:open3d_slam/ros/open3d_slam_msgs:open3d_slam/ros/open3d_slam_ros
--DCATKIN_DEVEL_PREFIX=/home/tezcan/Work_Spaces/open3d_ws/devel -DCMAKE_INSTALL_PREFIX=/home/tezcan/Work_Spaces/open3d_ws/install -G Unix Makefiles
