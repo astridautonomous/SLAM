@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/usr/src/googletest")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/tezcan/Work_Spaces/pcdfile2ocm_ws/build/catkin_tools_prebuild")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/build/catkin_tools_prebuild")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)

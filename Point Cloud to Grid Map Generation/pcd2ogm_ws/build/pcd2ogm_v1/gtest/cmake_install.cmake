@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/tezcan/Work_Spaces/pcdfile2ocm_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -39,7 +39,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/tezcan/Work_Spaces/pcdfile2ocm_ws/build/pcd2ogm_v1/gtest/googlemock/cmake_install.cmake")
+  include("/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/build/pcd2ogm_v1/gtest/googlemock/cmake_install.cmake")
 
 endif()
 

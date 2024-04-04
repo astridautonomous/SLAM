@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tezcan/Work_Spaces/pcdfile2ocm_ws/src/pcd2ogm_v1
+CMAKE_SOURCE_DIR = "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/src/pcd2ogm"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tezcan/Work_Spaces/pcdfile2ocm_ws/build/pcd2ogm_v1
+CMAKE_BINARY_DIR = "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/build/pcd2ogm_v1"
 
 # Utility rule file for tests.
 
@@ -67,6 +67,6 @@ CMakeFiles/tests.dir/clean:
 .PHONY : CMakeFiles/tests.dir/clean
 
 CMakeFiles/tests.dir/depend:
-	cd /home/tezcan/Work_Spaces/pcdfile2ocm_ws/build/pcd2ogm_v1 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tezcan/Work_Spaces/pcdfile2ocm_ws/src/pcd2ogm_v1 /home/tezcan/Work_Spaces/pcdfile2ocm_ws/src/pcd2ogm_v1 /home/tezcan/Work_Spaces/pcdfile2ocm_ws/build/pcd2ogm_v1 /home/tezcan/Work_Spaces/pcdfile2ocm_ws/build/pcd2ogm_v1 /home/tezcan/Work_Spaces/pcdfile2ocm_ws/build/pcd2ogm_v1/CMakeFiles/tests.dir/DependInfo.cmake --color=$(COLOR)
+	cd "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/build/pcd2ogm_v1" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/src/pcd2ogm" "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/src/pcd2ogm" "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/build/pcd2ogm_v1" "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/build/pcd2ogm_v1" "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/build/pcd2ogm_v1/CMakeFiles/tests.dir/DependInfo.cmake" --color=$(COLOR)
 .PHONY : CMakeFiles/tests.dir/depend
 

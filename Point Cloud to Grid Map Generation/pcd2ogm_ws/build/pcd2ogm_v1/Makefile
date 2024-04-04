@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tezcan/Work_Spaces/pcdfile2ocm_ws/src/pcd2ogm_v1
+CMAKE_SOURCE_DIR = "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/src/pcd2ogm"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tezcan/Work_Spaces/pcdfile2ocm_ws/build/pcd2ogm_v1
+CMAKE_BINARY_DIR = "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/build/pcd2ogm_v1"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -137,9 +137,9 @@ test/fast: test
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tezcan/Work_Spaces/pcdfile2ocm_ws/build/pcd2ogm_v1/CMakeFiles /home/tezcan/Work_Spaces/pcdfile2ocm_ws/build/pcd2ogm_v1/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/build/pcd2ogm_v1/CMakeFiles" "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/build/pcd2ogm_v1/CMakeFiles/progress.marks"
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tezcan/Work_Spaces/pcdfile2ocm_ws/build/pcd2ogm_v1/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/build/pcd2ogm_v1/CMakeFiles" 0
 .PHONY : all
 
 # The main clean target

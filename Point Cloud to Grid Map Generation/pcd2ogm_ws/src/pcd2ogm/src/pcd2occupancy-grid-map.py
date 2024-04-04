@@ -11,7 +11,7 @@ if __name__ == "__main__":
     rospy.loginfo("Astrid Autonomus")
     rospy.logwarn("Application has been started, please wait")
 
-    pcd = o3d.io.read_point_cloud("testdrive_carla.pcd") # Add here yours ".pcd" file
+    pcd = o3d.io.read_point_cloud("/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/src/pcd2ogm/src/testdrive_carla.pcd") # Add here yours ".pcd" file
     pcd_array = np.asarray(pcd.points)
 
     grid_value = {"OCCUPIED": 100, "FREE": 0, "UNKNOWN":-1, "BORDER": 100}
@@ -52,8 +52,9 @@ if __name__ == "__main__":
     for a in range(len(points)):
         x_road_axis = int(x_axis[a])
         y_road_axis = int(y_axis[a])
-        new_x_road_axis = (x_road_axis - (min_value_x))#/resolution             
+        new_x_road_axis = (x_road_axis - (min_value_x))#/resolution           
         new_y_road_axis = (y_road_axis - (min_value_y))#/resolution
+        # print(min_value_x, min_value_y)
 
         points[new_x_road_axis,new_y_road_axis] = grid_value["FREE"]
 
@@ -66,7 +67,7 @@ if __name__ == "__main__":
             new_y_road_axis = y_road_axis - (min_value_y)
             points[new_x_road_axis,new_y_road_axis] = grid_value["OCCUPIED"]
             
-            for r in range(2):
+            for r in range(4):
                 try:
                     points[new_x_road_axis+r,new_y_road_axis] = grid_value["BORDER"]
                     points[new_x_road_axis-r,new_y_road_axis] = grid_value["BORDER"]
@@ -96,9 +97,9 @@ if __name__ == "__main__":
     msg.info.origin.position.y = 0
     msg.info.origin.position.z = 0
     msg.data = points.flatten().tolist()
-
+    cv.imshow("sended_map",np.array(msg.data,dtype=np.uint8).reshape(326,306))
+    cv.waitKey(0)
+    cv.destroyAllWindows()
     while not rospy.is_shutdown():
         pub.publish(msg)
-        cv.imshow("map",np.array(msg.data,dtype=np.uint8).reshape(326,306))
-        cv.waitKey(0)
         rate.sleep()

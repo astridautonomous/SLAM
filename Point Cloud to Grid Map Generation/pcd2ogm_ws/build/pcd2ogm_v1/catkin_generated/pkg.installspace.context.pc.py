@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "".split(';') if "" != "" else []
 PROJECT_CATKIN_DEPENDS = "".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
 PROJECT_NAME = "pcd2ogm_v1"
-PROJECT_SPACE_DIR = "/home/tezcan/Work_Spaces/pcdfile2ocm_ws/install"
+PROJECT_SPACE_DIR = "/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/install"
 PROJECT_VERSION = "0.0.0"

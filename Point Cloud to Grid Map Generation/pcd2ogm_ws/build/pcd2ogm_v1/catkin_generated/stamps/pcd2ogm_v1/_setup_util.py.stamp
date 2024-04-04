@@ -1,4 +1,4 @@
-#!/home/tezcan/anaconda3/envs/rosbridge-carla/bin/python3
+#!/home/yorgundemokrat/anaconda3/envs/SLAM/bin/python3
 # -*- coding: utf-8 -*-
 
 # Software License Agreement (BSD License)
@@ -268,7 +268,7 @@ if __name__ == '__main__':
 
         if not args.local:
             # environment at generation time
-            CMAKE_PREFIX_PATH = r'/home/tezcan/Work_Spaces/pcdfile2ocm_ws/devel;/opt/ros/noetic'.split(';')
+            CMAKE_PREFIX_PATH = r'/home/yorgundemokrat/Desktop/SLAM/Point Cloud to Grid Map Generation/pcd2ogm_ws/devel;/home/yorgundemokrat/carla-ros-bridge/catkin_ws/devel;/opt/ros/noetic'.split(';')
         else:
             # don't consider any other prefix path than this one
             CMAKE_PREFIX_PATH = []
