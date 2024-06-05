@@ -1,2 +1,0 @@
-set(hector_nav_msgs_MESSAGE_FILES "")
-set(hector_nav_msgs_SERVICE_FILES "/home/tezcan/Work_Spaces/slam_ws/src/hector_slam/hector_nav_msgs/srv/GetDistanceToObstacle.srv;/home/tezcan/Work_Spaces/slam_ws/src/hector_slam/hector_nav_msgs/srv/GetRecoveryInfo.srv;/home/tezcan/Work_Spaces/slam_ws/src/hector_slam/hector_nav_msgs/srv/GetRobotTrajectory.srv;/home/tezcan/Work_Spaces/slam_ws/src/hector_slam/hector_nav_msgs/srv/GetSearchPosition.srv;/home/tezcan/Work_Spaces/slam_ws/src/hector_slam/hector_nav_msgs/srv/GetNormal.srv")
