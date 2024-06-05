@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/tezcan/workspaces/lanelet2_ws/catkin_ws/install/setup.sh
