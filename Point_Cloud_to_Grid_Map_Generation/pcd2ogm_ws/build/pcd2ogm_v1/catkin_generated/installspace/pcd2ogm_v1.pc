@@ -1,0 +1,8 @@
+prefix=/home/tezcan/sim_git/SLAM/Point_Cloud_to _Grid_Map_Generation/pcd2ogm_ws/install
+
+Name: pcd2ogm_v1
+Description: Description of pcd2ogm_v1
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
