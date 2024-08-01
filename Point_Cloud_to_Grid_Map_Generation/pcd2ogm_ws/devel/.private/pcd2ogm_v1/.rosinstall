@@ -1,2 +1,2 @@
 - setup-file:
-    local-name: /home/tezcan/sim_git/SLAM/Point_Cloud_to _Grid_Map_Generation/pcd2ogm_ws/devel/.private/pcd2ogm_v1/setup.sh
+    local-name: /home/yorgundemokrat/AutonomCar/SLAM/Point_Cloud_to_Grid_Map_Generation/pcd2ogm_ws/devel/.private/pcd2ogm_v1/setup.sh

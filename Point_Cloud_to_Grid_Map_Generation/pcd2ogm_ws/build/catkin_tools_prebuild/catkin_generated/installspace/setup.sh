@@ -11,7 +11,7 @@
 
 # since this file is sourced either use the provided _CATKIN_SETUP_DIR
 # or fall back to the destination set at configure time
-: ${_CATKIN_SETUP_DIR:=/home/tezcan/sim_git/SLAM/Point_Cloud_to _Grid_Map_Generation/pcd2ogm_ws/install}
+: ${_CATKIN_SETUP_DIR:=/home/yorgundemokrat/AutonomCar/SLAM/Point_Cloud_to_Grid_Map_Generation/pcd2ogm_ws/install}
 _SETUP_UTIL="$_CATKIN_SETUP_DIR/_setup_util.py"
 unset _CATKIN_SETUP_DIR
 

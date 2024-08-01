@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/usr/src/googletest")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/tezcan/sim_git/SLAM/Point_Cloud_to _Grid_Map_Generation/pcd2ogm_ws/build/pcd2ogm_v1")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/yorgundemokrat/AutonomCar/SLAM/Point_Cloud_to_Grid_Map_Generation/pcd2ogm_ws/build/pcd2ogm_v1")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)
