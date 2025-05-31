@@ -1,8 +1,0 @@
-# generated from catkin/cmake/template/pkg.context.pc.in
-CATKIN_PACKAGE_PREFIX = ""
-PROJECT_PKG_CONFIG_INCLUDE_DIRS = "".split(';') if "" != "" else []
-PROJECT_CATKIN_DEPENDS = "".replace(';', ' ')
-PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
-PROJECT_NAME = "pcd2ogm_v1"
-PROJECT_SPACE_DIR = "/home/yorgundemokrat/AutonomCar/SLAM/Point_Cloud_to_Grid_Map_Generation/pcd2ogm_ws/devel/.private/pcd2ogm_v1"
-PROJECT_VERSION = "0.0.0"

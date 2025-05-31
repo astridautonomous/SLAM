@@ -1,1 +1,0 @@
-/home/yorgundemokrat/AutonomCar/SLAM/Point_Cloud_to_Grid_Map_Generation/pcd2ogm_ws/devel/.private/catkin_tools_prebuild/env.sh
