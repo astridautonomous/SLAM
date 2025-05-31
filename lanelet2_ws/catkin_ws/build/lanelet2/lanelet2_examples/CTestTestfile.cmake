@@ -1,8 +1,0 @@
-# CMake generated Testfile for 
-# Source directory: /home/tezcan/workspaces/lanelet2_ws/catkin_ws/src/lanelet2/lanelet2_examples
-# Build directory: /home/tezcan/workspaces/lanelet2_ws/catkin_ws/build/lanelet2/lanelet2_examples
-# 
-# This file includes the relevant testing commands required for 
-# testing this directory and lists subdirectories to be tested as well.
-add_test(nosetests-lanelet2_examples-test "/home/tezcan/workspaces/lanelet2_ws/catkin_ws/build/catkin_generated/env_cached.sh" "/home/tezcan/anaconda3/envs/lanelet2/bin/python3" "/opt/ros/noetic/share/mrt_cmake_modules/cmake/../scripts/run_test.py" "/home/tezcan/workspaces/lanelet2_ws/catkin_ws/build/test_results/lanelet2_examples/nosetests-lanelet2_examples-test.xml" "--working-dir" "/home/tezcan/workspaces/lanelet2_ws/catkin_ws/src/lanelet2/lanelet2_examples" "--redirect-stderr" "--return-code" "/usr/bin/nosetests3 -P --process-timeout=60 --where=/home/tezcan/workspaces/lanelet2_ws/catkin_ws/src/lanelet2/lanelet2_examples/test --with-xunit --xunit-file=\"/home/tezcan/workspaces/lanelet2_ws/catkin_ws/build/test_results/lanelet2_examples/nosetests-lanelet2_examples-test.xml\" ")
-set_tests_properties(nosetests-lanelet2_examples-test PROPERTIES  DEPENDS "build_tests" _BACKTRACE_TRIPLES "/opt/ros/noetic/share/mrt_cmake_modules/cmake/Modules/MrtTesting.cmake;127;add_test;/opt/ros/noetic/share/mrt_cmake_modules/cmake/Modules/MrtTesting.cmake;278;_mrt_run_test;/opt/ros/noetic/share/mrt_cmake_modules/cmake/mrt_cmake_modules-macros.cmake;1304;_mrt_add_nosetests_impl;/home/tezcan/workspaces/lanelet2_ws/catkin_ws/src/lanelet2/lanelet2_examples/CMakeLists.txt;58;mrt_add_nosetests;/home/tezcan/workspaces/lanelet2_ws/catkin_ws/src/lanelet2/lanelet2_examples/CMakeLists.txt;0;")
