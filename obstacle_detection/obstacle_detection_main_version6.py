@@ -175,13 +175,13 @@ class CombinedLidarOGM(Node):
         # FSM: Engel tespit süreci
         if self.state == 'idle' and len(current_cells) >= 1:
             self.get_logger().info("Dynamic obstacle detected")
-            self.publish_dynamic_state(1)
+            self.publish_dynamic_state(0)
             new_state = 'detected'
             self.stable_start = None
 
         elif self.state in ['detected','stopped'] and len(dynamic_cells) >= dynamic_cell_treshold_moving:
             self.get_logger().info("Dynamic obstacle moving")
-            self.publish_dynamic_state(1)
+            self.publish_dynamic_state(0)
             new_state = 'moving'
             self.stable_start = None
 
@@ -192,7 +192,7 @@ class CombinedLidarOGM(Node):
                     self.stable_start = current_time
                 elif current_time - self.stable_start >= 1.0:
                     self.get_logger().info("Dynamic obstacle stopped")
-                    self.publish_dynamic_state(1)
+                    self.publish_dynamic_state(0)
                     new_state = 'stopped'
                     self.stable_start = None
             else:
@@ -204,7 +204,7 @@ class CombinedLidarOGM(Node):
                 self.empty_start = current_time
             elif current_time - self.empty_start >= control_time:
                 self.get_logger().info("Dynamic obstacle cleared")
-                self.publish_dynamic_state(0)  # Engel tamamen durdu ve sistem sıfırlandı
+                self.publish_dynamic_state(1)  # Engel tamamen durdu ve sistem sıfırlandı
                 new_state = 'idle'
                 self.cell_timestamps.clear()
                 self.empty_start = None
@@ -236,10 +236,10 @@ class CombinedLidarOGM(Node):
             black = np.count_nonzero(ogm==100)
             if black>=3:  #kutucuk sayısı kalibre edilebilir
                 self.get_logger().info("Occupied parking zone")
-                self.status_publisher.publish(Int8(data=1))
+                self.status_publisher.publish(Int8(data=0))
             else:
                 self.get_logger().info("Available parking zone")
-                self.status_publisher.publish(Int8(data=0))
+                self.status_publisher.publish(Int8(data=1))
 
         self.current_entry_handled=True
 
