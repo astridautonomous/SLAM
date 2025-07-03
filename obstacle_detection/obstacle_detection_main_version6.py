@@ -105,7 +105,7 @@ class CombinedLidarOGM(Node):
             self.process_parking(ogm, zone_id)
 
     def detect_parking_zone(self, x, y):
-        if -1.9703<=x<=6.5129 and -10.609<=y<=6.0129:
+        if -1.9703<=x<=6.5129 and -10.609<=y<=5.4736:
             return 3
         if 41.1619<=x<=46.9368 and -3.0345<=y<=18.2254:
             return 1
