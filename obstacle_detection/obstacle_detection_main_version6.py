@@ -88,7 +88,7 @@ class CombinedLidarOGM(Node):
         self.publish_ogm(ogm, ox, oy)
 
         # Region checks
-        in_crosswalk = (-19.6845 <= x <= -13.789 and 3.4669 <= y <= 9.4541)
+        in_crosswalk = (-19.6845 <= x <= -13.789 and 3.4669 <= y <= 10.8361)
         zone_id = self.detect_parking_zone(x,y)
 
         # If neither region, clear dynamic/parking state and return
@@ -105,7 +105,7 @@ class CombinedLidarOGM(Node):
             self.process_parking(ogm, zone_id)
 
     def detect_parking_zone(self, x, y):
-        if -1.9703<=x<=6.5129 and -10.609<=y<=4.8695:
+        if -1.9703<=x<=6.5129 and -10.609<=y<=6.0129:
             return 3
         if 41.1619<=x<=46.9368 and -3.0345<=y<=18.2254:
             return 1
