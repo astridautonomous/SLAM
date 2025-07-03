@@ -234,7 +234,7 @@ class CombinedLidarOGM(Node):
             self.status_publisher.publish(Int8(data=0))
         else:
             black = np.count_nonzero(ogm==100)
-            if black>=3:
+            if black>=3:  #kutucuk sayısı kalibre edilebilir
                 self.get_logger().info("Occupied parking zone")
                 self.status_publisher.publish(Int8(data=1))
             else:
