@@ -236,10 +236,10 @@ class CombinedLidarOGM(Node):
             black = np.count_nonzero(ogm==100)
             if black>=3:
                 self.get_logger().info("Occupied parking zone")
-                self.status_publisher.publish(Int8(data=0))
+                self.status_publisher.publish(Int8(data=1))
             else:
                 self.get_logger().info("Available parking zone")
-                self.status_publisher.publish(Int8(data=1))
+                self.status_publisher.publish(Int8(data=0))
 
         self.current_entry_handled=True
 
