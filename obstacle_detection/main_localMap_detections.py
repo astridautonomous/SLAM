@@ -36,7 +36,7 @@ class CombinedLidarOGM(Node):
         # Dynamic obstacle
         self.previous_ogm      = np.zeros((self.map_height, self.map_width), dtype=np.int8)
         self.cell_timestamps   = {}
-        self.stop_timeout      = 5.0
+        self.stop_timeout      = 5.0 #Kalibre edilebilir veri
         self.state             = 'idle'
         self.region_notified   = False
         self.cleared_flag      = False  # Yeni flag: cleared mesajı sonrası mesaj engelleme
