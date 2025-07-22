@@ -92,7 +92,7 @@ class LocalLaneletMatcher(Node):
     def __init__(self):
         super().__init__('local_lanelet_matcher')
         self.subscription = self.create_subscription(
-            Odometry, '/clap/ros/odometry', self.odom_callback, 10
+            Odometry, '/carla/hero/odometry', self.odom_callback, 10
         )
         self.pub = self.create_publisher(Int32, '/astrid/slam/current_lanelet_id', 10)
         self.last_lanelet_id = None
@@ -206,14 +206,14 @@ class TrafficSignProcessor(Node):
     def translate_sign(self, sign):
         """İngilizce/Türkçe işaret dönüşümü"""
         sign_mapping = {
-            "ileri_ve_sola_mecburi_yon": "Ileri ve sola mecburi yon",
-            "ileri_ve_saga_mecburi_yon": "Ileri ve sağa mecburi yon",
-            "sola_donulmez": "sola donulmez",
-            "saga_donulmez": "sağa donulmez",
+            "IleriSag": "Ileri ve sağa mecburi yon",
+            "ileriSag": "Ileri ve sola mecburi yon",
+            "yasakSag": "saga donulmez",
+            "yasakSol": "sola donulmez",
             "durak": "Durak",
             "park_yeri": "Park",
             "ileri": "Ileri mecburi yon",
-            "girisi_olmayan_yol":"girilmez"
+            "girilmez":"girilmez"
         }
         return sign_mapping.get(sign, sign)
 
@@ -298,8 +298,7 @@ class TrafficSignProcessor(Node):
                 block = True
             elif sign == "Ileri ve sola mecburi yon" and td == "right":
                 block = True
-            
-            # İLERİDEN SOLA MECBURİ YÖN: 3 AŞAMALI BLOKLAMA
+                        # İLERİDEN SOLA MECBURİ YÖN: 3 AŞAMALI BLOKLAMA
             elif sign == "Ileriden sola mecburi yon":
                 # 1. Aşama: Düz olmayanları blokla
                 if td != "straight":
