@@ -110,7 +110,7 @@ class CombinedLidarOGM(Node):
             return
 
         # Hem fiziksel bölgedeyiz hem de trafik işareti görüldü
-        if in_crosswalk and self.traffic_sign_detected:
+        if in_crosswalk or self.traffic_sign_detected:
             self.process_crosswalk(ogm)
         elif zone_id is not None:
             self.process_parking(ogm, zone_id)
@@ -129,15 +129,11 @@ class CombinedLidarOGM(Node):
             self.cell_timestamps.clear()
             self.region_notified=False
             self.cleared_flag=False
-            # Bölgeden çıkınca trafik işareti durumunu sıfırla
-            self.traffic_sign_detected = False
-
+            
         if self.in_parking_zone:
             self.in_parking_zone=False
             self.current_zone=None
             self.current_entry_handled=False
-            # Park bölgesinden çıkınca trafik işareti durumunu sıfırla
-            self.traffic_sign_detected = False
 
     def process_crosswalk(self, ogm):
         control_time = 5
@@ -145,7 +141,7 @@ class CombinedLidarOGM(Node):
         dynamic_cell_treshold_stopping =3
         
         if not self.region_notified:
-            self.get_logger().info("Yaya geçidi bölgesine girildi ve trafik işareti tespit edildi, dinamik engel takibi aktif")
+            self.get_logger().info("Yaya geçidi bölgesine girildi veya trafik işareti tespit edildi, dinamik engel takibi aktif")
             self.region_notified = True
             self.empty_start = None
             self.stable_start = None
