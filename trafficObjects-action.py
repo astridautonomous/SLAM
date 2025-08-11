@@ -92,7 +92,7 @@ class LocalLaneletMatcher(Node):
     def __init__(self):
         super().__init__('local_lanelet_matcher')
         self.subscription = self.create_subscription(
-            Odometry, '/carla/hero/odometry', self.odom_callback, 10
+            Odometry, '/clap/ros/odometry', self.odom_callback, 10
         )
         self.pub = self.create_publisher(Int32, '/astrid/slam/current_lanelet_id', 10)
         self.last_lanelet_id = None
@@ -155,7 +155,7 @@ class TrafficSignProcessor(Node):
         
         # Manevra tipleri
         self.manevra_linestring_types = ["park1","park2","park3","park4",
-                                        "park5","park6","park7","station_manevuer"]
+                                        "park5","park6","park7","park8","park9","station_maneuver1","station_maneuver2","station_maneuver3"]
         
         # Manevra noktaları
         self.manevra_pointler = []
