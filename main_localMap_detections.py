@@ -53,14 +53,24 @@ class CombinedLidarOGM(Node):
         self.traffic_sign_detected = False  # Yaya geçidi işareti algılandı mı?
 
     def traffic_sign_callback(self, msg):
-        """Trafik işareti mesajlarını işler"""
+        """Trafik işareti mesajlarını işler (sadece 'name' alanı ile kontrol)"""
         try:
             signs = json.loads(msg.data)
-            if "yaya_gecidi" in signs:
-                self.traffic_sign_detected = True
-                self.get_logger().info("Yaya geçidi trafik işareti algılandı")
+
+            if isinstance(signs, list) and signs:
+              # Tüm name alanlarını kontrol et
+               for sign in signs:
+                   sign_name = sign.get("name", "").lower()  # küçük harfe çevir, karşılaştırma kolay olsun
+                   if sign_name == "yaya_gecidi":
+                       self.traffic_sign_detected = True
+                       self.get_logger().info("Yaya geçidi trafik işareti algılandı")
+                       break  # bir tane bulunca çık
+
+        except json.JSONDecodeError:
+         self.get_logger().error("Geçersiz JSON formatı alındı")
         except Exception as e:
-            self.get_logger().error(f"Trafik işareti parse hatası: {str(e)}")
+          self.get_logger().error(f"Trafik işareti parse hatası: {str(e)}")
+
 
     def odom_callback(self, msg):
         self.latest_odom = msg
