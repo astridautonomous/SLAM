@@ -52,24 +52,34 @@ class CombinedLidarOGM(Node):
         # Trafik işareti durumu
         self.traffic_sign_detected = False  # Yaya geçidi işareti algılandı mı?
 
-    def traffic_sign_callback(self, msg):
-        """Trafik işareti mesajlarını işler (sadece 'name' alanı ile kontrol)"""
-        try:
-            signs = json.loads(msg.data)
+   def traffic_sign_callback(self, msg):
+    """Trafik işareti mesajlarını işler (sadece 'name' alanı ile kontrol)"""
+    try:
+        signs = json.loads(msg.data)
 
-            if isinstance(signs, list) and signs:
-              # Tüm name alanlarını kontrol et
-               for sign in signs:
-                   sign_name = sign.get("name", "").lower()  # küçük harfe çevir, karşılaştırma kolay olsun
-                   if sign_name == "yaya_gecidi":
-                       self.traffic_sign_detected = True
-                       self.get_logger().info("Yaya geçidi trafik işareti algılandı")
-                       break  # bir tane bulunca çık
+        if isinstance(signs, list) and signs:
+            for sign in signs:
+                # sign dict ise name alanını al, string ise direkt al
+                if isinstance(sign, dict):
+                    sign_name = sign.get("name", "").lower()
+                elif isinstance(sign, str):
+                    sign_name = sign.lower()
+                else:
+                    continue  # başka tipse atla
 
-        except json.JSONDecodeError:
-         self.get_logger().error("Geçersiz JSON formatı alındı")
-        except Exception as e:
-          self.get_logger().error(f"Trafik işareti parse hatası: {str(e)}")
+                # Karşılaştırma
+                if sign_name == "yaya_gecidi":
+                    self.traffic_sign_detected = True
+                    self.get_logger().info("Yaya geçidi trafik işareti algılandı")
+                    break  # bir tane bulunca çık
+        else:
+            self.get_logger().warn("Trafik işareti listesi boş veya geçersiz formatta.")
+
+    except json.JSONDecodeError:
+        self.get_logger().error("Geçersiz JSON formatı alındı")
+    except Exception as e:
+        self.get_logger().error(f"Trafik işareti parse hatası: {str(e)}")
+
 
 
     def odom_callback(self, msg):
