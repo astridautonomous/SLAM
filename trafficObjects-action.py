@@ -179,38 +179,48 @@ class TrafficSignProcessor(Node):
         self.current_lanelet_id = None
         self.last_processed_id = -9999
 
-    def traffic_sign_callback(self, msg):
-     """Trafik işareti topic'inden gelen veriyi işler (sadece 'name' alanı kullanılır)."""
-     try:
-         signs = json.loads(msg.data)
+    
+  def traffic_sign_callback(self, msg):
+    """Trafik işareti topic'inden gelen veriyi işler (sadece 'name' alanı kullanılır)."""
+    try:
+        signs = json.loads(msg.data)
 
-         if isinstance(signs, list) and signs:
-            # Yeni işaret algılandı, önceki bloklamaları temizle
-            if self.active_blocked_ids:
-                self.clear_blocking()
+        if isinstance(signs, list) and len(signs) > 0:
+            first_item = signs[0]
 
-            # İşaretin algılandığı anki lanelet'i kaydet
-            self.sign_detection_lanelet = self.current_lanelet_id
+            if isinstance(first_item, dict):
+                raw_sign_name = first_item.get("name")
+            elif isinstance(first_item, str):
+                raw_sign_name = first_item
+            else:
+                raw_sign_name = None
 
-            # İlk işareti al (sadece 'name' alanı)
-            raw_sign_name = signs[0].get("name", None)
             if raw_sign_name:
+                # Önceki bloklamaları temizle
+                if self.active_blocked_ids:
+                    self.clear_blocking()
+
+                # Lanelet kaydet
+                self.sign_detection_lanelet = self.current_lanelet_id
+
+                # Çevir ve logla
                 self.detected_sign = self.translate_sign(raw_sign_name)
                 self.get_logger().info(
                     f"Yeni trafik işareti algılandı: {raw_sign_name} -> {self.detected_sign}"
                 )
 
-                # Bloklama işlemini başlat
+                # Bloklama işlemi
                 self.process_and_publish_blocking()
             else:
                 self.get_logger().warn("Trafik işareti verisinde 'name' alanı bulunamadı.")
         else:
-          self.get_logger().warn("Trafik işareti listesi boş veya geçersiz formatta.")
+            self.get_logger().warn("Trafik işareti listesi boş veya geçersiz formatta.")
 
-     except json.JSONDecodeError:
+    except json.JSONDecodeError:
         self.get_logger().error("Geçersiz JSON formatı alındı")
-     except Exception as e:
+    except Exception as e:
         self.get_logger().error(f"Trafik işareti işlenirken hata: {str(e)}")
+
 
     def translate_sign(self, sign):
         """İngilizce/Türkçe işaret dönüşümü"""
