@@ -13,7 +13,7 @@ from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSReliabilityPolicy
 from shapely.geometry import Point, Polygon
 
 # Harita Yükleme
-filename = "/home/emirhan/Documents/simulation_fulltrackv6.osm"
+filename = "/home/emirhan/Documents/simulation_fulltrackv6.osm"          # Harita yolunu kendininkiyle değiştir
 latitude, longitude = 0.0, 0.0
 origin = lanelet2.io.Origin(latitude, longitude)
 projector = lanelet2.projection.LocalCartesianProjector(origin)
@@ -153,7 +153,7 @@ class TrafficSignProcessor(Node):
         self.sign_detection_lanelet = None
         self.active_blocked_ids = []
         
-        # Manevra tipleri
+        # Manevra tipleri                                                                       # osm deki linestringlere göre burayı değiştir
         self.manevra_linestring_types = ["park1","park2","park3","park4",
                                         "park5","park6","park7","park8","park9","station_maneuver1","station_maneuver2","station_maneuver3"]
         
@@ -223,7 +223,7 @@ class TrafficSignProcessor(Node):
 
 
     def translate_sign(self, sign):
-        """İngilizce/Türkçe işaret dönüşümü"""
+        """İngilizce/Türkçe işaret dönüşümü"""                 # Modeldeki isimlere göre bu kısmı değiştir
         sign_mapping = {
             "IleriSag": "Ileri ve sağa mecburi yon",
             "ileriSag": "Ileri ve sola mecburi yon",
