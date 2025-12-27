@@ -12,7 +12,7 @@ class CombinedOSMPathNode(Node):
         super().__init__('combined_osm_path_node')
         
         # OSM Marker Bileşeni
-        self.osm_path = '/home/emirhan/Documents/simulation_fulltrackv2.osm'
+        self.osm_path = '/home/emirhan/Documents/simulation_fulltrackv2.osm'   # Kendi osm inle değiştir
         self.marker_pub = self.create_publisher(MarkerArray, '/astrid/osm_map', 10)
         self.osm_marker_array = None
         self.parse_osm_file()  # OSM dosyasını başlangıçta bir kez parse et
@@ -58,7 +58,7 @@ class CombinedOSMPathNode(Node):
         root = tree.getroot()
         way_ids_to_include = set()
         allowed_relation_types = {'road', 'station1', 'station2', 'station3',
-                                  'park1', 'park2', 'park3', 'park4', 'park5', 'park6', 'park7', 'park8'}
+                                  'park1', 'park2', 'park3', 'park4', 'park5', 'park6', 'park7', 'park8'} # Bu nesneleri OSM dosyasındakine göre düzenle
 
         for relation in root.findall('relation'):
             relation_type = None
