@@ -136,7 +136,7 @@ class CombinedLidarOGM(Node):
             self.process_parking(ogm, zone_id)
 
     def detect_parking_zone(self, x, y):
-        if -19.426<=x<=-6.225 and -23.3805<=y<=-12.4065:
+        if -19.426<=x<=-6.225 and -23.3805<=y<=-12.4065:            # Durak koordinatları bu şekilde kullanacağın zaman değiştir
             return 1
         if -45.2734<=x<=-30.3478 and -60.999<=y<=-52.8818:
             return 2
@@ -279,7 +279,7 @@ class CombinedLidarOGM(Node):
         center_x = ox + half_w
         center_y = oy + half_h
 
-        yaw_fixed = math.radians(238.1)  # -121.5 degree
+        yaw_fixed = math.radians(238.1)  # -121.5 degree                # Global harita döndürülmüşse burası kullanılacak onun dışı gerek yok 0 yaz
         cos_f = math.cos(yaw_fixed)
         sin_f = math.sin(yaw_fixed)
 
