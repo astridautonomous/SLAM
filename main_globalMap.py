@@ -13,7 +13,7 @@ class CombinedOSMPathNode(Node):
         
         # OSM Marker Bileşeni
         self.osm_path = '/home/emirhan/Documents/simulation_fulltrackv2.osm'   # Kendi osm inle değiştir
-        self.marker_pub = self.create_publisher(MarkerArray, '/astrid/osm_map', 10)
+        self.marker_pub = self.create_publisher(MarkerArray, '/astrid/slam/global_map', 10)
         self.osm_marker_array = None
         self.parse_osm_file()  # OSM dosyasını başlangıçta bir kez parse et
         
