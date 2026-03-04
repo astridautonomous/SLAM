@@ -13,8 +13,8 @@ class VoxelFilterNode(Node):
 
         self.get_logger().info("Voxel Filter Node basladi.")
 
-        self.declare_parameter('non_filtered_topic','/non_filtered')
-        self.declare_parameter('filtered_topic','/filtered')
+        self.declare_parameter('non_filtered_topic','/carla/hero/lidar')
+        self.declare_parameter('filtered_topic','/astrid/slam/voxel_grid_filter')
         self.declare_parameter('voxel_leaf_size',0.2)
 
         self.non_filtered_topic = self.get_parameter('non_filtered_topic').get_parameter_value().string_value
