@@ -118,7 +118,7 @@ class TrafficSignProcessor(Node):
  
         # Yayıncılar
         self.blocked_pub = self.create_publisher(Int32MultiArray, '/astrid/slam/blocked_lanelet_ids', self.transient_qos)
-        self.manevra_pub = self.create_publisher(Float32MultiArray, '/astrid/slam/station_park_manevuer_points', self.transient_qos)
+        self.manevra_pub = self.create_publisher(Float32MultiArray, '/astrid/slam/station_park_manevuer_points', self.transient_qos)#Burası testler sonrası gerek olmadığı zaman çıkartılacak
  
         # Lanelet aboneliği
         self.sub = self.create_subscription(Int32, '/astrid/slam/current_lanelet_id', self.lanelet_callback, 10)
