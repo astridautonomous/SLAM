@@ -41,7 +41,7 @@ class LocalLaneletMatcher(Node):
     def __init__(self):
         super().__init__('local_lanelet_matcher')
         self.subscription = self.create_subscription(
-            Odometry, '/carla/hero/odometry', self.odom_callback, 10
+            Odometry, '/clap/ros/odometry', self.odom_callback, 10
         )
         self.pub = self.create_publisher(Int32, '/astrid/slam/current_lanelet_id', 10)
         self.last_lanelet_id = None
