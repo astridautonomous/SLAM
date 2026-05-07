@@ -149,7 +149,7 @@ class ObstacleClusterNode(Node):
         self._persistent_markers: dict[int, Marker] = {}
         self._next_id: int = 0
 
-        self.create_subscription(PointCloud2, '/carla/hero/lidar', self._cloud_cb, 1)
+        self.create_subscription(PointCloud2, '/astrid/slam/voxel_grid_filter', self._cloud_cb, 1)
         self._marker_pub = self.create_publisher(MarkerArray, '/clustered_marker',   10)
         self._pose_pub   = self.create_publisher(Pose,        '/astrid/slam/obstacle_locations', 10)
 
