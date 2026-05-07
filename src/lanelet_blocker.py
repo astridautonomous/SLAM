@@ -39,7 +39,7 @@ class LaneletBlockerV5(Node):
  
         # ── Subscriber / Publisher ────────────────────────────────────────────
         self.create_subscription(Pose,     '/astrid/slam/obstacle_locations',     self.centroid_callback, 10)
-        self.create_subscription(Odometry, '/carla/hero/odometry', self.odom_callback,     10)
+        self.create_subscription(Odometry, '/clap/ros/odometry', self.odom_callback,     10)
 
         self.blocked_pub = self.create_publisher(Int32MultiArray, '/astrid/slam/blocked_lanelet_ids', 10)
         self.obstacle_pose_pub = self.create_publisher(Pose,'/astrid/slam/obstacle_locations2', 10)
