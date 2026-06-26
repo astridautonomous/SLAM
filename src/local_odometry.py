@@ -6,6 +6,7 @@ import numpy as np
 from scipy.spatial.transform import Rotation as R
 from geometry_msgs.msg import TransformStamped # TF mesaj tipi eklendi
 from tf2_ros import TransformBroadcaster # Dinamik TF yayıncısı eklendi
+from tf_transformations import quaternion_multiply
 
 class LocalOdometryTransformer(Node):
     def __init__(self):
@@ -70,8 +71,16 @@ class LocalOdometryTransformer(Node):
         local_position_aligned = self.origin_rotation.inv().apply(local_position_raw)
         
         # 5. YÖNELİMİ (QUATERNION) SIFIRLAMA
-        local_quat = (current_quat * self.origin_rotation.inv()).as_quat()
+        local_quat = (self.origin_rotation.inv() * current_quat).as_quat()
+        r_local = R.from_quat(local_quat)
 
+        # 'xyz' sırasına göre derece cinsinden Euler açılarını alma
+        euler_degrees = r_local.as_euler('xyz', degrees=True)
+        geographic_heading = (90.0 - euler_degrees[2]) % 360.0
+
+        print("Yaw : ", euler_degrees[2])
+        print("Yaw2 : ", euler_degrees[2]+97)
+        # print(f"Geographic North Heading: {geographic_heading:.2f}°")
         # 6. YENİ ODOMETRİ MESAJINI OLUŞTUR VE YAYINLA
         local_msg = msg
         local_msg.header = msg.header
@@ -81,11 +90,15 @@ class LocalOdometryTransformer(Node):
         local_msg.pose.pose.position.x = local_position_aligned[0]
         local_msg.pose.pose.position.y = local_position_aligned[1]
         local_msg.pose.pose.position.z = local_position_aligned[2]
-        
-        local_msg.pose.pose.orientation.x = local_quat[0]
-        local_msg.pose.pose.orientation.y = local_quat[1]
-        local_msg.pose.pose.orientation.z = local_quat[2]
-        local_msg.pose.pose.orientation.w = local_quat[3]
+
+        q_180z = [0.0, 0.0, 1.0, 0.0]  # 180° Z ekseni
+
+        q_new = quaternion_multiply(q_180z, local_quat)
+
+        local_msg.pose.pose.orientation.x = q_new[0]
+        local_msg.pose.pose.orientation.y = q_new[1]
+        local_msg.pose.pose.orientation.z = q_new[2]
+        local_msg.pose.pose.orientation.w = q_new[3]
         
         self.publisher.publish(local_msg)
 
@@ -103,29 +116,30 @@ class LocalOdometryTransformer(Node):
         t.transform.translation.z = local_position_aligned[2]
 
         # Odometride hesaplanan yönelimi TF'e aktar
-        t.transform.rotation.x = local_quat[0]
-        t.transform.rotation.y = local_quat[1]
-        t.transform.rotation.z = local_quat[2]
-        t.transform.rotation.w = local_quat[3]
+
+        t.transform.rotation.x = q_new[0]
+        t.transform.rotation.y = q_new[1]
+        t.transform.rotation.z = q_new[2]
+        t.transform.rotation.w = q_new[3]
 
         transforms.append(t)
 
-        t2 = TransformStamped()
-        t2.header.stamp = local_msg.header.stamp # Gelen orijinal odometri zaman damgası korunmalı
-        t2.header.frame_id = 'base_link'
-        t2.child_frame_id = 'velodyne'
+        # t2 = TransformStamped()
+        # t2.header.stamp = local_msg.header.stamp # Gelen orijinal odometri zaman damgası korunmalı
+        # t2.header.frame_id = 'base_link'
+        # t2.child_frame_id = 'velodyne'
 
-        # Odometride hesaplanan pozisyonu TF'e aktar
-        t2.transform.translation.x = local_position_aligned[0]
-        t2.transform.translation.y = local_position_aligned[1]
-        t2.transform.translation.z = local_position_aligned[2]
+        # # Odometride hesaplanan pozisyonu TF'e aktar
+        # t2.transform.translation.x = local_position_aligned[0]
+        # t2.transform.translation.y = local_position_aligned[1]
+        # t2.transform.translation.z = local_position_aligned[2]
 
-        # Odometride hesaplanan yönelimi TF'e aktar
-        t2.transform.rotation.x = local_quat[0]
-        t2.transform.rotation.y = local_quat[1]
-        t2.transform.rotation.z = local_quat[2]
-        t2.transform.rotation.w = local_quat[3]
-        transforms.append(t2)
+        # # Odometride hesaplanan yönelimi TF'e aktar
+        # t2.transform.rotation.x = local_quat[0]
+        # t2.transform.rotation.y = local_quat[1]
+        # t2.transform.rotation.z = local_quat[2]
+        # t2.transform.rotation.w = local_quat[3]
+        # transforms.append(t2)
 
 
         # TF Ağacına gönderiyoruz
