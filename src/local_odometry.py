@@ -4,15 +4,13 @@ from rclpy.node import Node
 from nav_msgs.msg import Odometry
 import numpy as np
 from scipy.spatial.transform import Rotation as R
-from geometry_msgs.msg import TransformStamped # TF mesaj tipi eklendi
-from tf2_ros import TransformBroadcaster # Dinamik TF yayıncısı eklendi
-from tf_transformations import quaternion_multiply
+from geometry_msgs.msg import TransformStamped
+from tf2_ros import TransformBroadcaster
 
 class LocalOdometryTransformer(Node):
     def __init__(self):
         super().__init__('local_odometry_transformer')
         
-        # DİNAMİK TF YAYINLAYICI: odom -> base_link dönüşümünü ağaca basmak için
         self.tf_broadcaster = TransformBroadcaster(self)
         
         self.subscription = self.create_subscription(
@@ -28,122 +26,92 @@ class LocalOdometryTransformer(Node):
             10
         )
         
-        # 1. BAŞLANGIÇ DEĞERLERİ VE KALİBRASYON Sabitleri
-        self.anten_offset = np.array([0.0, -0.81, 0.20])
-        
         self.origin_rotation = R.from_quat([
-            0.006954508886855634,
-            0.0388077386168387276,
-            -0.9982542606022622,
-            -0.043979605055677766
+            0.039366576056305135,
+            -0.005621067737727492,
+            -0.49813080553122996,
+            -0.8661895732851433
         ])
         
-        raw_antenna_origin = np.array([669056.1787730327, 4546733.860840387, 102.32558589493439])
-        
-        origin_offset_global = self.origin_rotation.apply(self.anten_offset)
-        self.origin_position = raw_antenna_origin - origin_offset_global
-        
-        self.get_logger().info('Odometri Node Başlatıldı. Dinamik TF Yayıncısı aktif.')
+        self.origin_position = np.array([658509.2749288337, 4543736.032312304, 86.44469179731873])
+
+        self.get_logger().info('Odometri Node Başlatıldı.')
 
     def odom_callback(self, msg: Odometry):
-        # 1. Anlık mutlak koordinatları vektör olarak al
-        current_position = np.array([
+        vehicle_center_position = np.array([
             msg.pose.pose.position.x,
             msg.pose.pose.position.y,
             msg.pose.pose.position.z
         ])
+
+        # 2. Pozisyon sıfırlama
+        local_position_raw = vehicle_center_position - self.origin_position
         
-        current_quat = R.from_quat([
+        # 3. Harita koordinat sistemine hizalama
+        local_position_aligned = self.origin_rotation.inv().apply(local_position_raw)
+        
+        # 4. Yönelim: haritaya göre rölatif + yaw offset
+        qt = R.from_quat([
             msg.pose.pose.orientation.x,
             msg.pose.pose.orientation.y,
             msg.pose.pose.orientation.z,
             msg.pose.pose.orientation.w
         ])
+        # local_qt = self.origin_rotation.inv() * qt
+        # updated_quat_array = local_qt.as_quat()
 
-        # 2. Anlık anten pozisyonundan araç merkezini bul
-        offset_global = current_quat.apply(self.anten_offset)
-        vehicle_center_position = current_position - offset_global
-        
-        # 3. POZİSYON SIFIRLAMA
-        local_position_raw = vehicle_center_position - self.origin_position
-        
-        # 4. BAŞLANGIÇ YÖNÜNE HİZALAMA
-        local_position_aligned = self.origin_rotation.inv().apply(local_position_raw)
-        
-        # 5. YÖNELİMİ (QUATERNION) SIFIRLAMA
-        local_quat = (self.origin_rotation.inv() * current_quat).as_quat()
-        r_local = R.from_quat(local_quat)
+        euler = qt.as_euler('xyz', degrees=True)
 
-        # 'xyz' sırasına göre derece cinsinden Euler açılarını alma
-        euler_degrees = r_local.as_euler('xyz', degrees=True)
-        geographic_heading = (90.0 - euler_degrees[2]) % 360.0
+        # 2.HARİTA
+        # euler[2] += (180 - 83.18209917856753)
 
-        print("Yaw : ", euler_degrees[2])
-        print("Yaw2 : ", euler_degrees[2]+97)
-        # print(f"Geographic North Heading: {geographic_heading:.2f}°")
-        # 6. YENİ ODOMETRİ MESAJINI OLUŞTUR VE YAYINLA
+        # İLK HARİTA
+        print("mesaj:", euler[2])
+
+        euler[2] += -(59.71690265626092 + 3.668)
+        euler[2] = (euler[2] + 180) % 360 - 180
+        print(euler[2])
+        
+        # Array formatında yeni quaternion değerlerini tek seferde hesaplıyoruz
+        updated_quat_array = R.from_euler('xyz', euler, degrees=True).as_quat()
+        # 5. Odometry mesajı
         local_msg = msg
-        local_msg.header = msg.header
-        local_msg.header.frame_id = 'odom'        
-        local_msg.child_frame_id = 'base_link'    
+        local_msg.header.stamp = msg.header.stamp
+        local_msg.header.frame_id = 'odom'
+        local_msg.child_frame_id = 'base_link'
         
-        local_msg.pose.pose.position.x = local_position_aligned[0]
-        local_msg.pose.pose.position.y = local_position_aligned[1]
-        local_msg.pose.pose.position.z = local_position_aligned[2]
-
-        q_180z = [0.0, 0.0, 1.0, 0.0]  # 180° Z ekseni
-
-        q_new = quaternion_multiply(q_180z, local_quat)
-
-        local_msg.pose.pose.orientation.x = q_new[0]
-        local_msg.pose.pose.orientation.y = q_new[1]
-        local_msg.pose.pose.orientation.z = q_new[2]
-        local_msg.pose.pose.orientation.w = q_new[3]
+        local_msg.pose.pose.position.x = -local_position_aligned[0]
+        local_msg.pose.pose.position.y = -local_position_aligned[1]
+        local_msg.pose.pose.position.z = 0.0 #local_position_aligned[2]
         
+        # Doğrudan dizi (array) üzerinden değerleri mesaja atıyoruz
+        local_msg.pose.pose.orientation.x = updated_quat_array[0]
+        local_msg.pose.pose.orientation.y = updated_quat_array[1]
+        local_msg.pose.pose.orientation.z = updated_quat_array[2]
+        local_msg.pose.pose.orientation.w = updated_quat_array[3]
+        # local_msg.pose.pose.orientation = msg.pose.pose.orientation
         self.publisher.publish(local_msg)
 
-        # 7. CRITICAL DÜZELTME: TF AĞACINA YAYINLAMA (odom -> base_link)
-        transforms = []
-
+        # 6. TF yayını
         t = TransformStamped()
-        t.header.stamp = local_msg.header.stamp # Gelen orijinal odometri zaman damgası korunmalı
+        t.header.stamp = msg.header.stamp
         t.header.frame_id = 'odom'
         t.child_frame_id = 'base_link'
-
-        # Odometride hesaplanan pozisyonu TF'e aktar
-        t.transform.translation.x = local_position_aligned[0]
-        t.transform.translation.y = local_position_aligned[1]
-        t.transform.translation.z = local_position_aligned[2]
-
-        # Odometride hesaplanan yönelimi TF'e aktar
-
-        t.transform.rotation.x = q_new[0]
-        t.transform.rotation.y = q_new[1]
-        t.transform.rotation.z = q_new[2]
-        t.transform.rotation.w = q_new[3]
-
-        transforms.append(t)
-
-        # t2 = TransformStamped()
-        # t2.header.stamp = local_msg.header.stamp # Gelen orijinal odometri zaman damgası korunmalı
-        # t2.header.frame_id = 'base_link'
-        # t2.child_frame_id = 'velodyne'
-
-        # # Odometride hesaplanan pozisyonu TF'e aktar
-        # t2.transform.translation.x = local_position_aligned[0]
-        # t2.transform.translation.y = local_position_aligned[1]
-        # t2.transform.translation.z = local_position_aligned[2]
-
-        # # Odometride hesaplanan yönelimi TF'e aktar
-        # t2.transform.rotation.x = local_quat[0]
-        # t2.transform.rotation.y = local_quat[1]
-        # t2.transform.rotation.z = local_quat[2]
-        # t2.transform.rotation.w = local_quat[3]
-        # transforms.append(t2)
-
-
-        # TF Ağacına gönderiyoruz
-        self.tf_broadcaster.sendTransform(transforms)
+        
+        t.transform.translation.x = -local_position_aligned[0]
+        t.transform.translation.y = -local_position_aligned[1]
+        t.transform.translation.z = 0.0#local_position_aligned[2]
+        
+        # t.transform.rotation.x = msg.pose.pose.orientation.x
+        # t.transform.rotation.y = msg.pose.pose.orientation.y
+        # t.transform.rotation.z = msg.pose.pose.orientation.z
+        # t.transform.rotation.w = msg.pose.pose.orientation.w
+        t.transform.rotation.x = updated_quat_array[0]
+        t.transform.rotation.y = updated_quat_array[1]
+        t.transform.rotation.z = updated_quat_array[2]
+        t.transform.rotation.w = updated_quat_array[3]
+        
+        self.tf_broadcaster.sendTransform(t)
 
 
 def main(args=None):
