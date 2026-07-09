@@ -3,37 +3,68 @@ import rclpy
 from rclpy.node import Node
 from nav_msgs.msg import Odometry, Path
 from visualization_msgs.msg import Marker, MarkerArray
-from geometry_msgs.msg import Point, PoseStamped
+from geometry_msgs.msg import Point, PoseStamped, TransformStamped
+from tf2_ros import StaticTransformBroadcaster
+import math
+from scipy.spatial.transform import Rotation as R
+
 import xml.etree.ElementTree as ET
 import os
 
 class CombinedOSMPathNode(Node):
     def __init__(self):
         super().__init__('combined_osm_path_node')
-        
+
         # OSM Marker Bileşeni
-        self.osm_path = '/home/emirhan/Documents/simulation_fulltrackv2.osm'   # Kendi osm inle değiştir
+        # self.osm_path = '/home/hasan/test-06.06/test_osm_07_4.osm'
+        self.osm_path = '/home/hasan/map_dp/dp_map.osm'
+        # self.osm_path = '/home/hasan/map_dp/map_v0.osm'
+        self.tf_brd = StaticTransformBroadcaster(self)
+        self.publish_static_map_to_odom()
+
         self.marker_pub = self.create_publisher(MarkerArray, '/astrid/slam/global_map', 10)
         self.osm_marker_array = None
         self.parse_osm_file()  # OSM dosyasını başlangıçta bir kez parse et
-        
+
         # Path Bileşeni
         self.path_msg = Path()
-        self.path_msg.header.frame_id = 'map'
+        self.path_msg.header.frame_id = 'odom'
         self.path_pub = self.create_publisher(Path, '/astrid/slam/trajectory', 10)
-        
+
         # Odometry Aboneliği (her iki bileşen için ortak)
         self.odom_sub = self.create_subscription(
             Odometry,
-            '/clap/ros/odometry',
+            # '/astrid/odometry_local',
+            '/astrid/odometry_local',
             self.odometry_callback,
             10
         )
-        
+
         # OSM Marker'ları periyodik olarak yayınla
         self.timer = self.create_timer(1.0, self.publish_osm_markers)
-        
+
         self.get_logger().info("OSM Marker ve Path Publisher başlatıldı")
+
+    def publish_static_map_to_odom(self):
+        t = TransformStamped()
+        t.header.stamp = self.get_clock().now().to_msg()
+        t.header.frame_id = 'map'  
+        t.child_frame_id = 'odom'     
+
+        t.transform.translation.x = 0.0
+        t.transform.translation.y = 0.0
+        t.transform.translation.z = 0.0
+        
+        yaw_rot = R.from_euler('z', 59.71690265626092+3.668, degrees=True)
+        new_q = yaw_rot.as_quat()    
+        
+        t.transform.rotation.x = new_q[0]
+        t.transform.rotation.y = new_q[1]
+        t.transform.rotation.z = new_q[2]
+        t.transform.rotation.w = new_q[3]
+
+        self.tf_brd.sendTransform(t)
+        self.get_logger().info("Static Transform 'map' -> 'odom' başarıyla yayınlandı.")
 
     def odometry_callback(self, msg):
         # Path Güncelleme
@@ -130,7 +161,7 @@ class CombinedOSMPathNode(Node):
         # Zaman damgasını güncelle
         for marker in self.osm_marker_array.markers:
             marker.header.stamp = self.get_clock().now().to_msg()
-        
+
         self.marker_pub.publish(self.osm_marker_array)
 
 def main(args=None):
