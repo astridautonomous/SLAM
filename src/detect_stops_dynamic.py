@@ -1,13 +1,23 @@
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSReliabilityPolicy
+
 from std_msgs.msg import Int8,String
 from nav_msgs.msg import OccupancyGrid,Odometry
+from geometry_msgs.msg import Pose 
+
 import time
 import numpy as np
 import math
 import json
-from rclpy.qos import QoSProfile, QoSDurabilityPolicy, QoSReliabilityPolicy
+
+def calculate_distance(odom1: Odometry, odom2: Odometry):
+    x_diff = odom2.pose.pose.position.x - odom1.pose.pose.position.x
+    y_diff = odom2.pose.pose.position.y - odom1.pose.pose.position.y
+    dist = float(np.hypot(x_diff,y_diff))
+
+    return dist
 
 class DetectStopsNode(Node):
     def __init__(self):
@@ -28,7 +38,7 @@ class DetectStopsNode(Node):
         )
         self.create_subscription(
             Odometry,
-            "/clap/ros/odometry",
+            "/astrid/odometry_local",
             self.odom_callback,
             10
         )
@@ -86,21 +96,22 @@ class DetectStopsNode(Node):
                 self.pub_control = 0
 
     def is_side_zones_empty(self, ogm):
-        yaw = self.current_yaw
+        # yaw = self.current_yaw
+        zone = ogm[-self.side_col_count:, :]
 
         # Yaw'a göre OGM'de gerçek sağ tarafı bul
-        if -math.pi/4 < yaw <= math.pi/4:
-            # İleri bakıyor → sağ = alt satırlar (Y negatif)
-            zone = ogm[-self.side_col_count:, :]
-        elif math.pi/4 < yaw <= 3*math.pi/4:
-            # Sola dönmüş → sağ = son sütunlar
-            zone = ogm[:, -self.side_col_count:]
-        elif yaw > 3*math.pi/4 or yaw <= -3*math.pi/4:
-            # Geri bakıyor → sağ = üst satırlar
-            zone = ogm[:self.side_col_count, :]
-        else:
-            # Sağa dönmüş → sağ = ilk sütunlar
-            zone = ogm[:, :self.side_col_count]
+        # if -math.pi/4 < yaw <= math.pi/4:
+        #     İleri bakıyor → sağ = alt satırlar (Y negatif)
+        #     zone = ogm[-self.side_col_count:, :]
+        # elif math.pi/4 < yaw <= 3*math.pi/4:
+        #     Sola dönmüş → sağ = son sütunlar
+        #     zone = ogm[:, -self.side_col_count:]
+        # elif yaw > 3*math.pi/4 or yaw <= -3*math.pi/4:
+        #     Geri bakıyor → sağ = üst satırlar
+        #     zone = ogm[:self.side_col_count, :]
+        # else:
+        #     Sağa dönmüş → sağ = ilk sütunlar
+        #     zone = ogm[:, :self.side_col_count]
 
         occupied = np.count_nonzero(zone == 100)
         # self.get_logger().info(
@@ -113,7 +124,6 @@ class DetectStopsNode(Node):
         msg.data = station_status
         self.pub.publish(msg)
 
-
 class DetectDynamicNode(Node):
     def __init__(self):
         super().__init__('detect_dynamic_node')
@@ -124,7 +134,6 @@ class DetectDynamicNode(Node):
             durability=QoSDurabilityPolicy.VOLATILE,
             reliability=QoSReliabilityPolicy.BEST_EFFORT,
         )
-
         self.create_subscription(
             OccupancyGrid,
             "/astrid/slam/local_map",
@@ -137,32 +146,56 @@ class DetectDynamicNode(Node):
             self.traffic_sign_cb,
             self.transient_qos_perception
         )
+        self.create_subscription(
+            Odometry,
+            "/astrid/odometry_local",
+            self.odom_callback,
+            10
+        )
         self.pub = self.create_publisher(Int8,'/astrid/slam/dynamic_mode',10)
+        self.ogm_publisher = self.create_publisher(OccupancyGrid, '/astrid/slam/local_map_filtered', 10)
 
         # Config parameters
-        self.up_border = 1
-        self.side_border = 2
+        self.front_border = 0    
+        self.back_border = 6      
+        self.side_border = 1
         self.diff_threshold = 0
         self.control_time_treshold = 2.0
-        self.compare_time = 0.5
+        self.compare_time = 0.7
         self.deactivate_counter = 0
 
         # OGM
         self.previous_ogm = None
         self.latest_ogm = None
+        self.latest_msg = None
+
+        # Odometry
+        self.latest_odom = None
+        self.sign_detection_odom = None
 
         self.is_active = False
 
         self.create_timer(self.compare_time, self.compare_maps)
+        # self.create_timer(0.5, self.deactivate_node)
+
         self.control_time = time.monotonic()
 
     def traffic_sign_cb(self, msg):
         msg_list = json.loads(msg.data)
         data = msg_list[0][0]
 
-        if not self.is_active and data == 'yayaGecidi':
+        if not self.is_active and data == 'yaya_gecidi':
             self.is_active = True
-            self.get_logger().info("Dynamic zone detect devreye girdi")
+            self.sign_detection_odom = self.latest_odom
+
+            self.get_logger().info("Dinamik engel tespiti levha ile devrede.")
+
+    def odom_callback(self,msg):
+        self.latest_odom = msg
+
+        if -1.0469 <= self.latest_odom.pose.pose.position.x <= 5.2508 and 21.3318 <= self.latest_odom.pose.pose.position.y <= 28.2954:
+            self.is_active = True
+            self.get_logger().info("Dinamik engel tespiti konum ile devrede.")
 
     def ogm_callback(self, msg):        
         width = msg.info.width
@@ -170,6 +203,7 @@ class DetectDynamicNode(Node):
         ogm = np.asarray(msg.data, dtype=np.int8).reshape((height, width))
 
         self.latest_ogm = ogm
+        self.latest_msg = msg
 
     def compare_maps(self):
         now = time.monotonic()
@@ -186,15 +220,23 @@ class DetectDynamicNode(Node):
             return
 
         ogm = self.latest_ogm
-
         side_border = self.side_border
-        up_border = self.up_border
-        
-        inner = ogm[up_border:-up_border, side_border:-side_border]
-        prev_inner = self.previous_ogm[up_border:-up_border, side_border:-side_border]
+        front_border = self.front_border
+        back_border = self.back_border
+
+        h, w = ogm.shape
+        # x/y yer değiştirildi: front/back artık sütunlarda (x), side artık satırlarda (y)
+        row_start = side_border
+        row_end = h - side_border if side_border > 0 else h
+        col_start = back_border
+        col_end = w - front_border if front_border > 0 else w
+
+        inner = ogm[row_start:row_end, col_start:col_end]
+        prev_inner = self.previous_ogm[row_start:row_end, col_start:col_end]
+        self.publish_debug_ogm(inner, row_start, col_start)
 
         diff_count = np.count_nonzero(inner != prev_inner)
-        
+        print(diff_count)
         self.previous_ogm = ogm.copy()
 
         if diff_count > self.diff_threshold:
@@ -204,7 +246,7 @@ class DetectDynamicNode(Node):
             #gaz
             self.publish_control(0)
             self.deactivate_counter += 1
-            if self.deactivate_counter >= 20:
+            if self.deactivate_counter >= 200:
                 self.is_active = False
                 self.deactivate_counter = 0
                 self.publish_control(99)
@@ -214,10 +256,41 @@ class DetectDynamicNode(Node):
             self.publish_control(1)
             self.deactivate_counter = 0
 
+    def deactivate_node(self):
+        if calculate_distance(self.latest_msg,self.sign_detection_odom) >= 10.0:
+            self.is_active = False
+            msg = Int8()
+            msg.data = 99
+            self.pub.publish(msg)
+            self.get_logger().info("Dinamik engel tespiti devre disi.")
+
     def publish_control(self,control):
         msg = Int8()
         msg.data = control
         self.pub.publish(msg)
+
+    def publish_debug_ogm(self, inner, row_start, col_start):
+        if self.latest_msg is None:
+            return
+
+        src = self.latest_msg
+        out = OccupancyGrid()
+        out.header = src.header
+        out.header.stamp = self.get_clock().now().to_msg()
+
+        out.info.resolution = src.info.resolution
+        out.info.height, out.info.width = inner.shape
+
+        # Crop nedeniyle origin'i kayan miktar kadar öteliyoruz
+        out.info.origin = Pose()
+        out.info.origin.position.x = src.info.origin.position.x + col_start * src.info.resolution
+        out.info.origin.position.y = src.info.origin.position.y + row_start * src.info.resolution
+        out.info.origin.position.z = src.info.origin.position.z
+        out.info.origin.orientation = src.info.origin.orientation
+
+        out.data = inner.flatten().astype(np.int8).tolist()
+
+        self.ogm_publisher.publish(out)
 
 def main(args=None):
     rclpy.init(args=args)
@@ -241,3 +314,5 @@ def main(args=None):
 
 if __name__ == '__main__':
     main()
+
+
