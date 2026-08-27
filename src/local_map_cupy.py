@@ -2,105 +2,96 @@
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import PointCloud2
-from nav_msgs.msg import OccupancyGrid
-from std_msgs.msg import Header
+from nav_msgs.msg import OccupancyGrid, Odometry
+from std_msgs.msg import Header, Int8
 import sensor_msgs_py.point_cloud2 as pc2
 import numpy as np
-import cupy as cp
+np.float = float
+import math
 
-class FixedLidarOGMCupy(Node):
+class CombinedLidarOGM(Node):
     def __init__(self):
-        super().__init__('fixed_lidar_ogm_cupy')
-        self.get_logger().info("Fixed Lidar OGM - Lidar at Center")
+        super().__init__('combined_lidar_ogm')
+        self.get_logger().info("Kod çalışmaya başladı")
 
-        self.declare_parameter('use_voxel', False)
-        voxel_use = self.get_parameter('use_voxel').get_parameter_value().bool_value
-        pc2_topic = '/astrid/slam/voxel_grid_filter' if voxel_use else '/velodyne_points'
-
-        # Subscribers (Odometry kaldırıldı)
-        self.create_subscription(PointCloud2, pc2_topic, self.pointcloud_callback, 10)
+        # Subscribers
+        self.create_subscription(PointCloud2, '/velodyne_points',   self.pointcloud_callback, 10)
+        # self.create_subscription(PointCloud2, '/',   self.pointcloud_callback, 10)
+        self.create_subscription(Odometry,    '/astrid/odometry_local', self.odom_callback,10)
 
         # Publishers
         self.ogm_publisher = self.create_publisher(OccupancyGrid, '/astrid/slam/local_map', 10)
 
-        # OGM params (Dokunulmadı)
-        self.map_width = 8
-        self.map_height = 8
+        # OGM params
+        self.map_width = 12
         self.resolution = 1.0
 
-        # Lidar'ı Merkeze Sabitleyen Orijin Hesabı
-        # Harita 8x8 ve resolution 1.0 ise, toplam 8 metre genişlik vardır.
-        # Lidar (0,0)'da ise, sol alt köşe -4.0, -4.0 olmalıdır.
-        self.ox = -(self.map_width * self.resolution) / 2.0
-        self.oy = -(self.map_height * self.resolution) / 2.0
+        self.sag_mesafe = 2.0    
+        self.sol_mesafe = 4.0   
+        self.map_height = int((self.sag_mesafe + self.sol_mesafe) / self.resolution)
+        
+        # Odometry
+        self.latest_odom = None
+
+    def odom_callback(self, msg):
+        self.latest_odom = msg
 
     def pointcloud_callback(self, msg):
-        # 1. Process PointCloud using CuPy
-        points_np = pc2.read_points_numpy(msg, field_names=("x", "y", "z"), skip_nans=True)
-        if points_np.size == 0:
-            return
-            
-        points_gpu = cp.array(points_np) 
-
-        # 2. Filter by Z-height (Sabit araç için gürültü engelleme)
-        z_vals = cp.abs(points_gpu[:, 2])
-        mask = (z_vals > 0.3) & (z_vals < 2.0)
-        filtered_points = points_gpu[mask]
-
-        if filtered_points.shape[0] == 0:
-            self.publish_empty_ogm()
+        if self.latest_odom is None:
             return
 
-        # 3. Grid Indices (Lidar orijinde olduğu için x_odom/yaw hesabı kalktı)
-        px = filtered_points[:, 0]
-        py = filtered_points[:, 1]
+        x = self.latest_odom.pose.pose.position.x
+        y = self.latest_odom.pose.pose.position.y
+        q = self.latest_odom.pose.pose.orientation
+        t3 = 2.0*(q.w*q.z + q.x*q.y)
+        t4 = 1.0 - 2.0*(q.y*q.y + q.z*q.z)
+        yaw = math.atan2(t3, t4)
+        cos_yaw = math.cos(yaw)
+        sin_yaw = math.sin(yaw)
 
-        # Lidar (0,0) kabul edildiği için doğrudan orijin ofseti uygulanır
-        ix = ((px - self.ox) / self.resolution).astype(cp.int32)
-        iy = ((py - self.oy) / self.resolution).astype(cp.int32)
+        half_h = (self.map_height * self.resolution) / 2.0
+        half_w = (self.map_width * self.resolution) / 2.0
 
-        # 4. Boundary Check
-        valid_mask = (ix >= 0) & (ix < self.map_width) & (iy >= 0) & (iy < self.map_height)
-        ix = ix[valid_mask]
-        iy = iy[valid_mask]
+        R = np.array([[cos_yaw, -sin_yaw], # R -> rotasyon matrisi, arac dondugunde haritanın da donmesi icin
+                    [sin_yaw,  cos_yaw]])
+        local_origin = np.array([-half_w, -self.sag_mesafe]) # OGM'nin origin'i haritadaki en kücuk x ve y
+        gorigin = R @ local_origin + np.array([x, y]) # @ -> matris carpimi operatoru
+        ox, oy = gorigin[0], gorigin[1]
 
-        # 5. Fill Grid on GPU
-        ogm_gpu = cp.zeros((self.map_height, self.map_width), dtype=cp.int8)
-        ogm_gpu[iy, ix] = 100
-
-        # 6. Transfer and Publish
-        self.publish_ogm(cp.asnumpy(ogm_gpu), msg.header.frame_id)
-
-    def publish_empty_ogm(self):
         ogm = np.zeros((self.map_height, self.map_width), dtype=np.int8)
-        self.publish_ogm(ogm, 'map')
+        for px, py, pz in pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True):
+            if not (0.3 < abs(pz) < 2.0):
+                continue
+            ix = int((px + half_w) / self.resolution)
+            iy = int((py + self.sag_mesafe) / self.resolution)
+            if 0 <= ix < self.map_width and 0 <= iy < self.map_height:
+                ogm[iy, ix] = 100
+        self.publish_ogm(ogm, ox, oy, yaw)
 
-    def publish_ogm(self, ogm, frame_id):
+    def publish_ogm(self, ogm, ox, oy, yaw):
         msg = OccupancyGrid()
         msg.header = Header()
         msg.header.stamp = self.get_clock().now().to_msg()
-        msg.header.frame_id = frame_id 
-        
+        msg.header.frame_id = 'map'
         msg.info.resolution = self.resolution
         msg.info.width = self.map_width
         msg.info.height = self.map_height
-        msg.info.origin.position.x = float(self.ox)
-        msg.info.origin.position.y = float(self.oy)
-        msg.info.origin.orientation.w = 1.0
-        
+        msg.info.origin.position.x = ox
+        msg.info.origin.position.y = oy
+
+        # Yaw -> quaternion (sadece z ekseni etrafında rotasyon)
+        msg.info.origin.orientation.z = math.sin(yaw / 2.0)
+        msg.info.origin.orientation.w = math.cos(yaw / 2.0)
+
         msg.data = ogm.flatten().tolist()
         self.ogm_publisher.publish(msg)
 
 def main(args=None):
     rclpy.init(args=args)
-    node = FixedLidarOGMCupy()
-    try:
-        rclpy.spin(node)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        node.destroy_node()
-        rclpy.shutdown()
+    node=CombinedLidarOGM()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
 
-if __name__ == '__main__':
+if __name__=='__main__':
     main()
