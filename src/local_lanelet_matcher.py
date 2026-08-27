@@ -11,7 +11,7 @@ from shapely.geometry import Point, Polygon
 from shapely.prepared import prep
  
 # ─── Harita Yükleme ───────────────────────────────────────────────────────────
-filename = "/home/astrid/test-27.04/carla_test.osm"
+filename = "/media/astrid/SMSSD/Robotaxi-26-Map/map/map_v6.osm"
 origin = lanelet2.io.Origin(0.0, 0.0)
 projector = lanelet2.projection.LocalCartesianProjector(origin)
  
@@ -31,7 +31,7 @@ class LocalLaneletMatcher(Node):
         super().__init__('local_lanelet_matcher')
  
         self.subscription = self.create_subscription(
-            Odometry, '/clap/ros/odometry', self.odom_callback, 10
+            Odometry, '/astrid/odometry_local', self.odom_callback, 10
         )
         self.pub = self.create_publisher(Int32, '/astrid/slam/current_lanelet_id', 10)
  
